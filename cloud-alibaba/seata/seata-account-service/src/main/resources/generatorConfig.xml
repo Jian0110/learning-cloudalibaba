@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--导入属性配置-->
+    <properties resource="generatorDatasource.properties"></properties>
+
+    <!-- 指定数据库驱动的jdbc驱动jar包的位置，mybatis generator插件中已经引入，这里就不需要-->
+    <!-- <classPathEntry location="${db.driverLocation}" />-->
+
+    <!-- context 是逆向工程的主要配置信息 -->
+    <!-- targetRuntime：设置生成的文件适用于那个 mybatis 版本 -->
+    <context id="default" targetRuntime="MyBatis3">
+
+        <!-- 1.TKmybatis Configuration -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!-- tkMybatis 生成的mapper继承baseMapper -->
+            <property name="mappers" value="${common.baseMapper}"/>
+            <property name="caseSensitive" value="true"/>
+        </plugin>
+
+        <!--2.Lombok Configuration-->
+      <!--  <plugin type="${lombok.plugin}">
+            <property name="hasLombok" value="true"/>
+        </plugin>-->
+
+        <!--3.Comment Configuration-->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!--4.JDBC Configuration-->
+        <jdbcConnection driverClass="${jdbc.driverClassName}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.username}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <!--5.Configuration of convert between JdbcType and SqlType -->
+        <javaTypeResolver>
+            <!-- 默认情况下数据库中的 decimal，bigInt 在 Java 对应是 sql 下的 BigDecimal 类 -->
+            <!-- 不是 double 和 long 类型 -->
+            <!-- 使用常用的基本类型代替 sql 包下的引用类型 -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+
+        <!-- 6.Model Configuration -->
+        <!-- targetProject：生成的实体类所在的硬盘位置 targetPackage：生成的实体类所在的包 -->
+        <javaModelGenerator targetPackage="com.springcloud.entity" targetProject="src/main/java">
+            <!-- 是否允许子包 -->
+            <property name="enableSubPackages" value="false" />
+            <!-- 是否对model添加构造函数 -->
+            <property name="constructorBased" value="true" />
+            <!-- 是否清理从数据库中查询出的字符串左右两边的空白字符 -->
+            <property name="trimStrings" value="true" />
+            <!-- 建立model对象是否不可改变 即生成的model对象不会有setter方法，只有构造方法 -->
+            <property name="immutable" value="false" />
+        </javaModelGenerator>
+
+        <!-- 7.Mapper XML Configuration -->
+        <!-- 需要注意的是，当数据库中对应的字段改变时，XML不会被覆盖，需要删除重新生成 -->
+        <sqlMapGenerator targetPackage="mappers"
+                         targetProject="src/main/resources">
+            <!-- 针对数据库的一个配置，是否把 schema 作为字包名 -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+
+        <!-- 8.Mapper Interface Configuration -->
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.springcloud.mapper" targetProject="src/main/java">
+            <!-- 针对 oracle 数据库的一个配置，是否把 schema 作为字包名 -->
+            <!--<property name="enableSubPackages" value="false" />-->
+        </javaClientGenerator>
+
+        <!--9.Table Configuration -->
+        <table tableName="user_account"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+    </context>
+</generatorConfiguration>

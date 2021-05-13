@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        -id: before_route
+        -uri: localhost:8081
+        predicates:
+          -Aftter
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true # 开启从注册中心动态创建路由的功能
